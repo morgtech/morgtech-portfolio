@@ -1,74 +1,139 @@
-# Godwill Morgan Lekwa — Morgtech + ELYON Tech Solutions
+# Godwill Morgan Lekwa | Morgtech
 
-A responsive personal professional portfolio with a Groq-powered FlowPilot AI demonstration and a separate Ventures section for Morgtech and ELYON Tech Solutions.
+**Computer Engineer · AI & LLM Evaluation · Telecommunications · Software & AI Automation**
 
-## Portfolio structure
+Welcome to my professional portfolio repository.
 
-- Home and professional introduction
-- About and technical skills
-- Projects: FlowPilot AI, OPPDISCO, SurePriceNG and Electricity Outage Predictor
-- Professional experience: telecommunications engineering and AI data/LLM evaluation
-- Training and ongoing learning
-- Ventures: Morgtech (personal technology brand) and ELYON Tech Solutions (company identity)
-- Contact (add your professional email before publishing)
+This project showcases my technical background, professional experience, learning journey, and selected technology projects. It also features **FlowPilot AI**, an AI-powered text assistant integrated with the Groq API.
 
-Project stages are labelled as working demo, in development, or research. Do not describe a concept as a completed production product.
+My work combines telecommunications engineering, AI data evaluation, emerging software technologies, and practical digital solutions.
 
-## Requirements
+## Live Portfolio
+
+- **Website:** https://morgtech-portfolio.onrender.com/
+- **GitHub:** https://github.com/morgtech
+
+## About This Portfolio
+
+The portfolio is designed to present my professional profile and demonstrate selected projects, technical capabilities, and areas of ongoing development.
+
+### What's Included
+
+- **Professional Profile:** Background, experience, and career interests.
+- **Technical Skills:** Telecommunications, RF engineering, AI evaluation, and software technologies.
+- **Professional Experience:** Telecommunications engineering and AI data/LLM evaluation.
+- **Projects:** Selected technology projects and prototypes.
+- **Training & Development:** Technical certifications, courses, and ongoing learning.
+- **Ventures:** Morgtech and ELYON Tech Solutions.
+- **Contact:** Professional contact information.
+
+## Featured Projects
+
+| Project | Description |
+|---|---|
+| FlowPilot AI | AI-powered text assistant using the Groq API. |
+| OPPDISCO | Career and opportunity discovery platform concept. |
+| SurePriceNG | Price comparison and local business discovery platform concept. |
+| Electricity Outage Predictor | Electricity outage prediction and analysis project. |
+
+Project descriptions reflect their actual development stages. Concepts, prototypes, and working demonstrations are not presented as completed production products.
+
+## Technology Stack
+
+- **Frontend:** React 18, Vite 6
+- **Backend:** Node.js, Express
+- **AI Integration:** Groq API
+- **Languages:** JavaScript, HTML, CSS, Python
+- **Deployment:** Render
+- **Version Control:** Git and GitHub
+
+## Running Locally
+
+### Requirements
 
 - Node.js 20 or newer
-- the Groq console API key for live FlowPilot responses (free-tier access and quotas depend on Google's current model availability and terms)
+- npm
+- A Groq API key for live FlowPilot AI responses
 
-## Configure Groq locally
+### 1. Clone the repository
 
-1. Create an API key at https://console.groq.com/keys
-2. Copy `.env.example` to `.env` in the project root.
-3. Add your key to `.env`:
+```bash
+git clone https://github.com/morgtech/morgtech-portfolio.git
+cd morgtech-portfolio
+```
 
-   ```env
-   GROQ_API_KEY=your_real_key
-   GROQ_MODEL=llama-3.3-70b-versatile
-   PORT=3001
-   ```
+### 2. Install dependencies
 
-4. Install dependencies: `npm install`
-5. Run locally: `npm run dev`
-6. Open http://localhost:5173
+```bash
+npm install
+```
 
-Keep `.env` private. Never place the API key in frontend code, a `VITE_` variable, screenshots, or a public GitHub repository. The `.gitignore` excludes `.env`.
+### 3. Configure environment variables
 
-Without a Groq key, the portfolio still loads; FlowPilot will report that its API is not configured.
+Copy `.env.example` to `.env` in the project root.
 
-## Deploy the complete app to Render
+Add your Groq API key and configuration:
 
-This project contains both a Vite frontend and an Express API. Deploy them together as **one Render Web Service**, not as a Static Site, so FlowPilot's `/api` routes work on the same public domain.
+```env
+PORT=3001
+NODE_ENV=development
+AI_PROVIDER=groq
+GROQ_API_KEY=your_groq_api_key_here
+GROQ_MODEL=openai/gpt-oss-120b
+```
 
-1. Push the contents of this project folder to a GitHub repository. The `package.json` must be at the repository root.
-2. In Render, choose **New → Web Service** and connect that GitHub repository.
-3. Configure:
-   - Runtime: `Node`
-   - Root Directory: leave blank if `package.json` is at the repository root
-   - Build Command: `npm install && npm run build`
-   - Start Command: `npm start`
-   - Instance: Free is suitable for an initial demonstration, subject to Render's current limits
-4. In Render → Environment, add:
-   - `NODE_ENV` = `production`
-   - `GROQ_API_KEY` = your private Groq API key
-   - `GROQ_MODEL` = `llama-3.3-70b-versatile` (change this if Google no longer lists it for your API project)
-   - Do not manually set `PORT`; Render provides it.
-5. Deploy. The Express server serves the built `dist` frontend and the `/api` endpoints from the same origin.
-6. Test the public site and FlowPilot. Check `/api/health` if the assistant does not connect.
+Get an API key from the [Groq Console](https://console.groq.com/keys).
 
-Render can automatically redeploy when you push changes to the connected Git branch. Free web services may spin down after inactivity, so the first visit after idle time can be slower. See https://render.com/docs/your-first-deploy and https://render.com/docs/web-services.
+### 4. Start the application
 
-## Before making the portfolio public
+```bash
+npm run dev
+```
 
-- Replace `YOUR_EMAIL@example.com` in `src/main.jsx` with your real professional email.
-- Review all experience, training and project-stage wording for accuracy.
-- Add links to repositories or live demos only when those resources are genuinely public and ready.
-- Verify ELYON Tech Solutions' public-facing company description and any claims about services before publishing.
-- FlowPilot currently drafts and analyses text. It does not send messages, access customer systems, update CRMs or execute external actions.
+Open the local address displayed in your terminal.
 
-## Security and privacy
+**Security:** Keep your `.env` file private. Never commit API keys or expose them in frontend code, screenshots, or public repositories.
 
-The Groq API key is read only by the server. FlowPilot sends the submitted prompt to Google's Groq API. Do not submit passwords, OTPs, payment-card data, confidential customer information or other sensitive personal data. The application does not save chat history. The included in-memory request throttle is a basic demo safeguard, not production-grade abuse prevention; add persistent rate limiting, monitoring and spending controls before promoting it to broad public use.
+## Deployment
+
+The application uses a React/Vite frontend and an Express backend. Both are deployed together as a single Render Web Service.
+
+The repository includes a `render.yaml` configuration for deployment.
+
+To deploy:
+
+1. Push the project to GitHub.
+2. Connect the repository to Render.
+3. Create or configure a Web Service using the repository's Render configuration.
+4. Add your private `GROQ_API_KEY` in Render's environment settings.
+5. Deploy the application.
+
+Render supplies the production `PORT` automatically.
+
+For deployment documentation, visit:
+
+- [Render Web Services](https://render.com/docs/web-services)
+- [Render Blueprint Configuration](https://render.com/docs/blueprint-spec)
+
+## Security & Privacy
+
+FlowPilot uses a server-side API integration. The Groq API key is not intended to be exposed to the browser.
+
+Avoid submitting passwords, OTPs, payment information, confidential business records, or other sensitive personal information.
+
+The project is a demonstration and portfolio application. Its safeguards should not be treated as a substitute for production-grade security, monitoring, and abuse prevention.
+
+## About Morgtech & ELYON Tech Solutions
+
+**Morgtech** is my personal technology brand, focused on technology, digital solutions, AI, and practical innovation.
+
+**ELYON Tech Solutions** is my approved company identity, established around the development of accessible technology and digital solutions.
+
+## Connect
+
+- **GitHub:** [@morgtech](https://github.com/morgtech)
+- **Portfolio:** [morgtech-portfolio.onrender.com](https://morgtech-portfolio.onrender.com/)
+
+---
+
+*Built and maintained by Godwill Morgan Lekwa.*
