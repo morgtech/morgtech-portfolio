@@ -1,75 +1,258 @@
-﻿import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { ArrowDown, ArrowRight, ArrowUpRight, Bot, BriefcaseBusiness, Check, ChevronDown, Code2, Cpu, Github, Globe2, GraduationCap, Linkedin, Menu, MessageSquareText, Network, Send, ShieldCheck, Sparkles, Terminal, X, Zap } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Bot, Briefcase, Check, Code2, Cpu, Github, Globe2, GraduationCap, Menu, Network, Send, ShieldCheck, Sparkles, Terminal, X, Zap, Copy } from 'lucide-react';
 import './styles.css';
 
-const projects = [
-  { number: '01', name: 'FlowPilot AI', type: 'INTERACTIVE PROTOTYPE Â· GEMINI API', desc: 'An AI work assistant for drafting customer responses, classifying requests, summarising conversations and recommending next steps.', tags: ['Gemini API', 'React', 'Node.js'], status: 'Interactive demo Â· API key required', href: '#flowpilot', icon: Bot },
-  { number: '02', name: 'OppDisco', type: 'CAREER TECHNOLOGY Â· IN DEVELOPMENT', desc: 'An opportunity-discovery platform concept for jobs, scholarships, internships, grants and training, with AI-assisted CV and career tools.', tags: ['AI-assisted matching', 'Career technology', 'Product design'], status: 'In development', icon: Globe2 },
-  { number: '03', name: 'SurePriceNG', type: 'MARKETPLACE TECHNOLOGY Â· IN DEVELOPMENT', desc: 'A Nigerian price-discovery and local business discovery concept focused on price transparency, vendor trust and proximity.', tags: ['Marketplace', 'Location-aware discovery', 'Trust & safety'], status: 'In development', icon: Network },
-  { number: '04', name: 'Electricity Outage Predictor', type: 'AI/ML RESEARCH PROJECT', desc: 'A research project exploring historical Nigerian electricity outage reports and relevant data to investigate predictive insights.', tags: ['Python', 'AI/ML', 'Data analysis'], status: 'Research / development', icon: Zap },
-];
-const skills = [
-  { title: 'AI & LLM evaluation', detail: 'Data annotation, response evaluation, search relevance and multimodal dataset validation.', level: 'Professional experience', icon: Sparkles },
-  { title: 'Workflow automation', detail: 'n8n foundations, workflow logic, automation concepts and AI-assisted process design.', level: 'Developing', icon: Network },
-  { title: 'Programming', detail: 'Python fundamentals, programming logic and practical software development.', level: 'Developing', icon: Code2 },
-  { title: 'Telecommunications', detail: 'RF engineering, antenna optimisation, network deployment, LTE and 3G/4G/5G.', level: 'Professional experience', icon: Cpu },
-  { title: 'AI application development', detail: 'Gemini API integration, prompt design, React interfaces and backend API concepts.', level: 'Project practice', icon: Terminal },
-  { title: 'Technical problem-solving', detail: 'Troubleshooting, research, data quality, technical operations and documentation.', level: 'Professional experience', icon: ShieldCheck },
+const EMAIL = 'godwiillekwa17@gmail.com';
+
+const nav = [['About', '#about'], ['Skills', '#skills'], ['Projects', '#projects'], ['Experience', '#experience'], ['Training', '#training'], ['Ventures', '#ventures']];
+
+const stats = [
+  ['~6 yrs', 'Telecom engineering at Huawei'],
+  ['4', 'Platforms for AI data work'],
+  ['1', 'Live AI demo you can try'],
+  ['Remote', 'Open to opportunities']
 ];
 
-function Header({ active, setActive }) {
+const skills = [
+  { icon: Sparkles, title: 'AI data and LLM evaluation', text: 'Annotation, grading model responses, search relevance, and checking multimodal datasets.', tag: 'Professional' },
+  { icon: Cpu, title: 'Telecommunications', text: 'RF engineering, antenna optimisation, network deployment, LTE and 3G/4G/5G.', tag: 'Professional' },
+  { icon: Terminal, title: 'Building with AI', text: 'LLM APIs (Groq, Gemini), prompt design, React front ends and simple backend APIs.', tag: 'Hands-on' },
+  { icon: Network, title: 'Workflow automation', text: 'n8n basics and thinking through which repetitive jobs are worth automating.', tag: 'Learning' },
+  { icon: Code2, title: 'Python', text: 'Working through the fundamentals and using them in small projects.', tag: 'Learning' },
+  { icon: ShieldCheck, title: 'Troubleshooting', text: 'Tracking down faults, writing things down properly, and keeping data clean.', tag: 'Professional' }
+];
+
+const projects = [
+  { icon: Bot, name: 'FlowPilot AI', stage: 'Working demo', text: 'An assistant that drafts customer replies, sorts incoming requests and summarises long threads. It only drafts. It never sends anything.', tags: ['Groq API', 'React', 'Node.js'], href: '#flowpilot', wide: true },
+  { icon: Globe2, name: 'OppDisco', stage: 'In development', text: 'One place to find jobs, scholarships, internships, grants and training, with some AI help on CVs.', tags: ['Matching', 'Career tech'] },
+  { icon: Network, name: 'SurePriceNG', stage: 'In development', text: 'Helps people in Nigeria compare prices and find trustworthy local vendors nearby.', tags: ['Marketplace', 'Local discovery'] },
+  { icon: Zap, name: 'Electricity Outage Predictor', stage: 'Research', text: 'Looking at past Nigerian outage reports to see whether patterns can be predicted.', tags: ['Python', 'ML', 'Data analysis'] }
+];
+
+const training = [
+  [GraduationCap, 'AI and Machine Learning', 'Formal training in the concepts and how they get applied.', 'Completed'],
+  [Network, 'n8n Automation Quickstart', 'Intro course on building automated workflows.', 'Completed'],
+  [Code2, 'Python Programming', 'Still going. Lessons and exercises, a bit every week.', 'In progress'],
+  [Terminal, 'Data Literacy and IT Fundamentals', 'Data basics, IT foundations and technical support.', 'Foundation']
+];
+
+function Header() {
   const [open, setOpen] = useState(false);
-  const links = [['About', '#about'], ['Skills', '#skills'], ['Projects', '#projects'], ['Experience', '#experience'], ['Training', '#training'], ['Ventures', '#ventures'], ['Contact', '#contact']];
-  return <header className="header"><a className="brand" href="#home" onClick={() => setActive('')}>MORGTECH<span>.</span></a><button className="mobile-toggle" onClick={() => setOpen(!open)} aria-label="Toggle navigation">{open ? <X/> : <Menu/>}</button><nav className={open ? 'nav open' : 'nav'}>{links.map(([label, href]) => <a key={href} className={active === href ? 'active' : ''} href={href} onClick={() => { setActive(href); setOpen(false); }}>{label}</a>)}<a className="nav-cta" href="#contact" onClick={() => setOpen(false)}>Let's talk <ArrowUpRight size={14}/></a></nav></header>;
+  return (
+    <header className="header">
+      <div className="bar">
+        <a className="brand" href="#home"><span className="logo">M</span>Morgtech</a>
+        <nav className={open ? 'links open' : 'links'}>
+          {nav.map(([l, h]) => <a key={h} href={h} onClick={() => setOpen(false)}>{l}</a>)}
+          <a className="btn btn-sm" href="#contact" onClick={() => setOpen(false)}>Contact</a>
+        </nav>
+        <button className="menu" onClick={() => setOpen(!open)} aria-label="Menu">{open ? <X size={20} /> : <Menu size={20} />}</button>
+      </div>
+    </header>
+  );
 }
-function SectionHead({ eyebrow, title, note }) { return <div className="section-head"><div><div className="eyebrow">{eyebrow}</div><h2>{title}</h2></div>{note && <p>{note}</p>}</div>; }
-function ProjectCard({ project }) { const Icon = project.icon; return <article className="project-card"><div className="project-top"><span>{project.number} / FEATURED PROJECT</span><Icon size={21}/></div><div className="project-type">{project.type}</div><h3>{project.name}</h3><p>{project.desc}</p><div className="tags">{project.tags.map(t => <span key={t}>{t}</span>)}</div><div className="project-bottom"><span><i className="status-dot"/>{project.status}</span>{project.href && <a href={project.href}>Try the demo <ArrowUpRight size={14}/></a>}</div></article>; }
+
+function Head({ kicker, title, sub }) {
+  return <div className="head"><span className="kicker">{kicker}</span><h2>{title}</h2>{sub && <p>{sub}</p>}</div>;
+}
+
 function FlowPilot() {
-  const [task, setTask] = useState('A customer says their order has not arrived, but the tracking page shows it is still in transit. Draft a helpful response that acknowledges the concern and explains the next steps without promising a delivery date.');
-  const [context, setContext] = useState('We are a small online retailer. Ask for the order reference only if needed.');
+  const [task, setTask] = useState('A customer says their order hasn\'t arrived, but tracking shows it\'s still in transit. Write a helpful reply that acknowledges the worry and explains what happens next, without promising a delivery date.');
+  const [context, setContext] = useState('We are a small online shop. Only ask for the order number if it\'s really needed.');
   const [category, setCategory] = useState('Customer support');
   const [tone, setTone] = useState('Empathetic');
   const [answer, setAnswer] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [health, setHealth] = useState('checking');
+  const [copied, setCopied] = useState(false);
+
   useEffect(() => { fetch('/api/health').then(r => r.json()).then(d => setHealth(d.configured ? 'ready' : 'setup')).catch(() => setHealth('offline')); }, []);
-  const templates = [
-    ['Reply to a customer', 'Draft a clear, empathetic reply to this customer message: '],
-    ['Classify a request', 'Classify this incoming request by topic, urgency (low/medium/high), sentiment, and recommended team. Explain briefly: '],
-    ['Summarise a conversation', 'Summarise this conversation into: issue, actions already taken, unresolved questions, and next step: '],
-    ['Create an SOP', 'Turn this process into a concise standard operating procedure with numbered steps, owner, and checks: ']
+
+  const presets = [
+    ['Reply to a customer', 'Write a clear, kind reply to this customer message: '],
+    ['Sort a request', 'Classify this request by topic, urgency (low/medium/high), sentiment and the team that should handle it. Keep the reasoning short: '],
+    ['Summarise a thread', 'Summarise this conversation as: the issue, what has been done, what is still open, and the next step: '],
+    ['Write an SOP', 'Turn this process into a short SOP with numbered steps, an owner for each, and checks: ']
   ];
-  async function runAssistant(e) {
+  const label = { ready: 'Groq connected', setup: 'API key needed', offline: 'Backend offline', checking: 'Checking...' }[health];
+
+  async function run(e) {
     e.preventDefault(); setBusy(true); setError(''); setAnswer('');
     try {
-      const response = await fetch('/api/assistant', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ task, context, category, tone }) });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || 'Something went wrong.');
-      setAnswer(data.answer);
-    } catch (err) { setError(err.message || 'Could not connect.'); }
-    finally { setBusy(false); }
+      const r = await fetch('/api/assistant', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ task, context, category, tone }) });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error || 'Something went wrong.');
+      setAnswer(d.answer);
+    } catch (err) { setError(err.message || 'Could not connect.'); } finally { setBusy(false); }
   }
-  return <section className="flow-section" id="flowpilot"><div className="flow-intro"><div><div className="eyebrow">INTERACTIVE PROJECT Â· 01</div><h2>Meet <em>FlowPilot AI.</em></h2><p>A small, practical demonstration of how a language model can support everyday customer-operations work. Choose a task, provide context, and let Gemini prepare a useful first draft.</p></div><div className="flow-status"><span className={`pulse ${health === 'ready' ? 'good' : ''}`}/>{health === 'ready' ? 'Gemini API connected' : health === 'setup' ? 'API key setup required' : health === 'offline' ? 'Backend not running' : 'Checking connection'}</div></div>
-    <div className="flow-app"><aside className="flow-sidebar"><div className="flow-logo"><span className="flow-logo-icon"><Bot size={18}/></span><div><b>FlowPilot</b><small>BY MORGTECH</small></div></div><div className="sidebar-label">WORKSPACE</div><div className="sidebar-item selected"><MessageSquareText size={16}/> AI assistant</div><div className="sidebar-item"><Network size={16}/> Workflow ideas</div><div className="sidebar-item"><BriefcaseBusiness size={16}/> Use cases</div><div className="sidebar-note"><Sparkles size={16}/><b>Built for practical work</b><p>Draft, organise and think through routine customer operations.</p></div><div className="sidebar-foot">PORTFOLIO PROTOTYPE Â· 2026</div></aside>
-    <div className="flow-main"><div className="flow-toolbar"><div><span className="online-dot"/> Assistant ready</div><span className="model-label">GEMINI Â· GENERATE CONTENT API</span></div><form className="assistant-form" onSubmit={runAssistant}><div className="form-title"><div><span className="eyebrow">YOUR WORKSPACE</span><h3>What can I help you with?</h3></div><span className="spark-icon"><Sparkles size={18}/></span></div><div className="template-row">{templates.map(([label, prefix]) => <button type="button" key={label} onClick={() => { setTask(prefix); setAnswer(''); }}>{label}</button>)}</div><label className="field-label" htmlFor="task">TASK OR CUSTOMER MESSAGE</label><textarea id="task" value={task} onChange={e => setTask(e.target.value)} rows="5" maxLength={6000} placeholder="Describe the task or paste a customer messageâ€¦" required/><div className="field-meta"><span>Be specific. Remove personal or sensitive information.</span><span>{task.length}/6000</span></div><div className="form-grid"><label><span className="field-label">TASK CATEGORY</span><select value={category} onChange={e => setCategory(e.target.value)}><option>Customer support</option><option>Operations</option><option>Workflow planning</option><option>Writing & communication</option><option>Research & analysis</option></select></label><label><span className="field-label">RESPONSE TONE</span><select value={tone} onChange={e => setTone(e.target.value)}><option>Empathetic</option><option>Professional</option><option>Friendly</option><option>Concise</option><option>Formal</option></select></label></div><label className="field-label" htmlFor="context">ADDITIONAL CONTEXT <span className="optional">OPTIONAL</span></label><textarea id="context" value={context} onChange={e => setContext(e.target.value)} rows="2" maxLength={3000} placeholder="Relevant background, policies or constraintsâ€¦"/><div className="submit-row"><span><ShieldCheck size={14}/> Review AI output before using it.</span><button className="run-button" type="submit" disabled={busy || task.trim().length < 3}>{busy ? <><span className="spinner"/> Workingâ€¦</> : <>Run with Gemini <Send size={15}/></>}</button></div></form>
-    <div className="result-panel"><div className="result-head"><span><Sparkles size={15}/> GENERATED RESPONSE</span><span className="result-tag">AI DRAFT</span></div>{error ? <div className="error-message"><b>Unable to generate a response</b><p>{error}</p></div> : answer ? <><div className="answer-text">{answer}</div><button className="copy-button" onClick={() => navigator.clipboard?.writeText(answer)}>Copy response</button></> : <div className="empty-result"><div className="empty-icon"><Bot size={23}/></div><b>Your result will appear here</b><p>Run a task to generate a draft, classification or summary with Gemini.</p></div>}</div><div className="disclaimer"><ShieldCheck size={14}/> Demo only: FlowPilot drafts and analyses text. It does not send messages, access customer systems or execute external actions.</div></div></div></section>;
+  function copy() { navigator.clipboard?.writeText(answer); setCopied(true); setTimeout(() => setCopied(false), 1500); }
+
+  return (
+    <section className="section" id="flowpilot">
+      <div className="wrap">
+        <Head kicker="Live demo" title="Try FlowPilot" sub="I built this to see how far a language model can go with everyday support work. Pick a task, add a bit of context, and it gives you a first draft to edit." />
+        <div className="app">
+          <div className="app-bar">
+            <div className="dots"><i /><i /><i /></div>
+            <span className="app-title">flowpilot.app</span>
+            <span className={`pill ${health}`}><i />{label}</span>
+          </div>
+          <div className="app-body">
+            <form onSubmit={run} className="app-form">
+              <div className="chips">{presets.map(([l, p]) => <button type="button" key={l} onClick={() => { setTask(p); setAnswer(''); }}>{l}</button>)}</div>
+              <label>Task or customer message</label>
+              <textarea rows="6" value={task} onChange={e => setTask(e.target.value)} maxLength={6000} required />
+              <div className="row2">
+                <div><label>Category</label><select value={category} onChange={e => setCategory(e.target.value)}><option>Customer support</option><option>Operations</option><option>Workflow planning</option><option>Writing & communication</option><option>Research & analysis</option></select></div>
+                <div><label>Tone</label><select value={tone} onChange={e => setTone(e.target.value)}><option>Empathetic</option><option>Professional</option><option>Friendly</option><option>Concise</option><option>Formal</option></select></div>
+              </div>
+              <label>Extra context <em>optional</em></label>
+              <textarea rows="2" value={context} onChange={e => setContext(e.target.value)} maxLength={3000} />
+              <div className="submit">
+                <small>Please leave out personal or sensitive details.</small>
+                <button className="btn" disabled={busy || task.trim().length < 3}>{busy ? 'Thinking...' : <>Generate draft <Send size={14} /></>}</button>
+              </div>
+            </form>
+            <div className="app-out">
+              <div className="out-head"><span><Sparkles size={14} /> Draft</span>{answer && <button className="ghost" onClick={copy}>{copied ? <><Check size={13} /> Copied</> : <><Copy size={13} /> Copy</>}</button>}</div>
+              {error ? <div className="err"><b>That didn't work</b><p>{error}</p></div>
+                : answer ? <div className="answer">{answer}</div>
+                : <div className="empty"><Bot size={28} /><b>Nothing yet</b><p>Run a task and your draft shows up here.</p></div>}
+            </div>
+          </div>
+        </div>
+        <p className="fine"><ShieldCheck size={14} /> Demo only. FlowPilot writes and analyses text. It doesn't send messages or touch any customer system. Always read the output before using it.</p>
+      </div>
+    </section>
+  );
 }
+
+function Contact() {
+  const [copied, setCopied] = useState(false);
+  const gmail = `https://mail.google.com/mail/?view=cm&fs=1&to=${EMAIL}&su=${encodeURIComponent('Hello Godwill')}`;
+  function copy() {
+    const done = () => { setCopied(true); setTimeout(() => setCopied(false), 1800); };
+    if (navigator.clipboard?.writeText) navigator.clipboard.writeText(EMAIL).then(done, done); else done();
+  }
+  return (
+    <>
+      <div className="cta center">
+        <a className="btn btn-light" href={gmail} target="_blank" rel="noreferrer">Write me an email <ArrowUpRight size={16} /></a>
+        <a className="btn btn-ghost-light" href="https://github.com/morgtech" target="_blank" rel="noreferrer"><Github size={16} /> GitHub</a>
+      </div>
+      <div className="mailrow">
+        <span>{EMAIL}</span>
+        <button type="button" onClick={copy}>{copied ? <><Check size={13} /> Copied</> : <><Copy size={13} /> Copy</>}</button>
+        <a href={`mailto:${EMAIL}`}>Open mail app</a>
+      </div>
+    </>
+  );
+}
+
 function App() {
-  const [active, setActive] = useState('');
-  const [year] = useState(new Date().getFullYear());
-  useEffect(() => { const onScroll = () => { const ids = ['about','skills','projects','experience','training','ventures','contact']; const current = ids.map(id => document.getElementById(id)).filter(Boolean).find(el => el.getBoundingClientRect().top <= 150 && el.getBoundingClientRect().bottom > 150); if (current) setActive('#' + current.id); }; window.addEventListener('scroll', onScroll, { passive: true }); return () => window.removeEventListener('scroll', onScroll); }, []);
-  return <><Header active={active} setActive={setActive}/><main><section className="hero wrap" id="home"><div className="hero-copy"><div className="eyebrow"><span className="eyebrow-line"/> COMPUTER ENGINEERING Â· AI Â· TECHNOLOGY</div><h1>Building useful technology.<br/><em>Solving real problems.</em></h1><p className="hero-lead">I'm <strong>Godwill Morgan Lekwa</strong> â€” a Computer Engineer and AI Data Specialist developing practical skills in AI applications, programming and workflow automation.</p><div className="hero-actions"><a className="button-primary" href="#projects">Explore my work <ArrowUpRight size={16}/></a><a className="button-text" href="#contact">Get in touch <ArrowRight size={15}/></a></div><div className="hero-foot"><span><i className="status-dot"/> OPEN TO REMOTE OPPORTUNITIES</span><span>ABA, NIGERIA Â· WORKING GLOBALLY</span></div></div><div className="hero-art"><div className="orbit orbit-one"/><div className="orbit orbit-two"/><div className="core-card"><div className="core-top"><span>M / TECH</span><span className="live-pill">â— ONLINE</span></div><div className="core-symbol"><span>M</span><i/></div><div className="core-caption">ENGINEERING<br/>INTELLIGENCE</div><div className="core-bottom"><span>BUILD</span><span>Â·</span><span>LEARN</span><span>Â·</span><span>IMPROVE</span></div></div><div className="float-chip chip-one"><Cpu size={15}/> ENGINEERING</div><div className="float-chip chip-two"><Sparkles size={15}/> ARTIFICIAL INTELLIGENCE</div><div className="float-chip chip-three"><Network size={15}/> AUTOMATION</div><div className="art-index">01 â€” 07<br/>PERSONAL PORTFOLIO</div></div><a className="scroll-cue" href="#about"><ArrowDown size={14}/> SCROLL TO EXPLORE</a></section>
-  <section className="about-section section wrap" id="about"><SectionHead eyebrow="01 / ABOUT" title={<>Engineering experience.<br/><em>Technology-driven curiosity.</em></>} note="A practical mix of industry experience, AI work and continuous technical development."/><div className="about-grid"><div className="about-statement"><span className="quote-mark">â€œ</span><h3>Connecting engineering thinking with emerging AI technologies.</h3></div><div className="about-copy"><p>My professional background spans computer engineering, telecommunications and AI data operations. I bring approximately six years of telecommunications experience with Huawei Technologies, alongside experience contributing to AI data and model-evaluation projects.</p><p>Through work involving annotation, search relevance and LLM evaluation, I've developed a strong appreciation for data quality, clear instructions and the importance of reliable AI systems.</p><p>I'm now strengthening my programming and automation capabilities, exploring how tools such as Python, n8n and Gemini can turn repetitive processes into useful digital solutions.</p><div className="about-facts"><div><b>6 yrs</b><span>Telecom experience</span></div><div><b>AI / LLM</b><span>Data operations</span></div><div><b>Always</b><span>Learning by building</span></div></div></div></div></section>
-  <section className="skills-section section" id="skills"><div className="wrap"><SectionHead eyebrow="02 / SKILLS" title={<>What I know.<br/><em>What I'm developing.</em></>} note="An honest snapshot of my professional foundation and current technical growth."/><div className="skills-grid">{skills.map((s,i) => { const Icon=s.icon; return <article className="skill-card" key={s.title}><div className="skill-number">0{i+1}</div><Icon size={21}/><h3>{s.title}</h3><p>{s.detail}</p><span>{s.level}</span></article>; })}</div></div></section>
-  <section className="projects-section section wrap" id="projects"><SectionHead eyebrow="03 / PROJECTS" title={<>Ideas, experiments<br/><em>and working builds.</em></>} note="Projects are labelled by their actual stage. Explore the working Gemini-powered demonstration below."/><div className="projects-grid">{projects.map(p => <ProjectCard key={p.number} project={p}/>)}</div></section>
-  <FlowPilot/>
-  <section className="experience-section section" id="experience"><div className="wrap"><SectionHead eyebrow="04 / EXPERIENCE" title={<>Professional experience.<br/><em>Practical perspective.</em></>} note="Experience across telecommunications engineering and AI data operations."/><div className="timeline"><article className="timeline-item"><div className="timeline-date">TELECOMMUNICATIONS ENGINEERING</div><div className="timeline-mark"><span/></div><div className="timeline-content"><div className="timeline-meta">HUAWEI TECHNOLOGIES <span>Â· APPROX. 6 YEARS</span></div><h3>Telecommunications Engineering</h3><p>Experience across network deployment and technical operations, including antenna optimisation, RF engineering, deployment supervision and mobile network technologies.</p><div className="tags"><span>3G / 4G / 5G</span><span>LTE / MIMO</span><span>RF engineering</span><span>Antenna optimisation</span></div></div></article><article className="timeline-item"><div className="timeline-date">ARTIFICIAL INTELLIGENCE</div><div className="timeline-mark"><span/></div><div className="timeline-content"><div className="timeline-meta">INTERNATIONAL AI DATA PLATFORMS <span>Â· PROJECT-BASED</span></div><h3>AI Data Annotator & LLM Evaluator</h3><p>Contributed to AI data annotation, model response evaluation, search relevance assessment and multimodal dataset validation across platforms including OneForma, RWS, Appen CrowdGen and Lionbridge.</p><div className="tags"><span>LLM evaluation</span><span>Data quality</span><span>Search relevance</span><span>Multimodal data</span></div></div></article></div></div></section>
-  <section className="training-section section wrap" id="training"><SectionHead eyebrow="05 / TRAINING" title={<>Learning through<br/><em>practice and progress.</em></>} note="Training and self-directed study supporting my transition into AI-enabled development."/><div className="training-list"><div className="training-row"><div className="training-icon"><GraduationCap/></div><div><h3>AI & Machine Learning Training</h3><p>Formal learning in AI/ML concepts and practical applications.</p></div><span className="training-status">COMPLETED</span></div><div className="training-row"><div className="training-icon"><Network/></div><div><h3>n8n Automation Quickstart</h3><p>Completed introductory workflow automation training.</p></div><span className="training-status">COMPLETED</span></div><div className="training-row"><div className="training-icon"><Code2/></div><div><h3>Python Programming</h3><p>Currently building fundamentals through structured lessons and exercises.</p></div><span className="training-status progress">IN PROGRESS</span></div><div className="training-row"><div className="training-icon"><Terminal/></div><div><h3>Data Literacy & IT Fundamentals</h3><p>Training in data concepts, IT foundations and technical support.</p></div><span className="training-status">FOUNDATION</span></div></div></section>
-  <section className="projects-section section wrap" id="ventures"><SectionHead eyebrow="06 / VENTURES" title={<>Building beyond<br/><em>the personal portfolio.</em></>} note="My professional work and the technology ventures I'm developing have distinct identities, but share one goal: making useful technology more accessible."/><div className="projects-grid"><article className="project-card"><div className="project-top"><span>01 / TECHNOLOGY BRAND</span><Cpu size={21}/></div><div className="project-type">PERSONAL TECHNOLOGY BRAND</div><h3>Morgtech</h3><p>Morgtech is my personal technology and engineering brand, through which I explore software, AI, digital products and practical technology services.</p><div className="tags"><span>Technology</span><span>AI projects</span><span>Digital solutions</span></div><div className="project-bottom"><span><i className="status-dot"/>Personal brand</span><a href="https://github.com/morgtech" target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={14}/></a></div></article><article className="project-card"><div className="project-top"><span>02 / REGISTERED COMPANY IDENTITY</span><BriefcaseBusiness size={21}/></div><div className="project-type">TECHNOLOGY Â· AI Â· DIGITAL SOLUTIONS</div><h3>ELYON Tech Solutions</h3><p>A Nigerian technology company being developed to deliver practical digital solutions, software, AI-enabled services and business automation for organisations and individuals.</p><div className="tags"><span>Software solutions</span><span>AI & automation</span><span>Digital transformation</span></div><div className="project-bottom"><span><i className="status-dot"/>Company development</span><span>Building its product portfolio</span></div></article></div></section>
-  <section className="contact-section section" id="contact"><div className="wrap contact-wrap"><div className="eyebrow">07 / CONTACT</div><h2>Let's build<br/><em>something meaningful.</em></h2><p>I'm interested in remote opportunities, technical collaborations and conversations about AI, automation, engineering and useful digital products.</p><div className="contact-actions"><a className="button-primary" href="mailto:godwiillekwa17@gmail.com?subject=Opportunity%20for%20Godwill%20Morgan">Email me <ArrowUpRight size={16}/></a><a className="button-outline" href="https://github.com/morgtech" target="_blank" rel="noreferrer"><Github size={16}/> GitHub profile</a></div><div className="contact-note">Email placeholder â€” replace with your professional email before publishing.</div></div></section></main><footer className="footer wrap"><a className="brand" href="#home">MORGTECH<span>.</span></a><span>Â© {year} Godwill Morgan Lekwa</span><span>MORGTECH Â· ELYON TECH SOLUTIONS</span><a href="#home" className="back-top">BACK TO TOP â†‘</a></footer></>;
+  return (
+    <>
+      <Header />
+      <main>
+        <section className="hero" id="home">
+          <div className="glow" />
+          <div className="wrap hero-grid">
+            <div>
+              <span className="badge"><i /> Open to remote work</span>
+              <h1>I build useful tech and I'm still getting better at it.</h1>
+              <p className="lead">Hi, I'm Godwill Morgan Lekwa. I'm a computer engineer who spent about six years in telecom, then moved into AI data work. These days I'm teaching myself to build things with Python, n8n and LLM APIs like Groq.</p>
+              <div className="cta">
+                <a className="btn" href="#projects">See my projects <ArrowUpRight size={16} /></a>
+                <a className="btn btn-ghost" href="#flowpilot">Try the demo <ArrowRight size={16} /></a>
+              </div>
+              <div className="loc">Based in Aba, Nigeria. Working with people anywhere.</div>
+            </div>
+            <div className="mock">
+              <div className="mock-top"><span className="logo">M</span><div><b>Morgtech</b><small>Engineering + AI</small></div><span className="pill ready"><i />Online</span></div>
+              <div className="mock-row"><Cpu size={16} /><span>Huawei, RF and network deployment</span><em>~6 yrs</em></div>
+              <div className="mock-row"><Sparkles size={16} /><span>AI data and LLM evaluation</span><em>Ongoing</em></div>
+              <div className="mock-row"><Bot size={16} /><span>FlowPilot AI</span><em>Live demo</em></div>
+              <div className="mock-row"><Code2 size={16} /><span>Python</span><em>Learning</em></div>
+            </div>
+          </div>
+          <div className="wrap stats">{stats.map(([n, t]) => <div key={t}><b>{n}</b><span>{t}</span></div>)}</div>
+        </section>
+
+        <section className="section" id="about">
+          <div className="wrap">
+            <Head kicker="About" title="Engineer first, now building with AI." />
+            <div className="about">
+              <p>I started out in computer engineering and spent roughly six years at Huawei Technologies working on telecom networks. Most of that was deployment, antenna optimisation and RF work.</p>
+              <p>Later I picked up AI data projects: annotation, search relevance, and evaluating LLM answers. Doing that day after day taught me how much clean data and clear instructions matter. A model is only as good as what it's fed and how it's judged.</p>
+              <p>Now I'm learning to build. Python, n8n and LLM APIs like Groq are the tools I reach for, and I mostly learn by making small things and fixing what breaks.</p>
+            </div>
+          </div>
+        </section>
+
+        <section className="section alt" id="skills">
+          <div className="wrap">
+            <Head kicker="Skills" title="What I do well, and what I'm still learning." sub="Each card says where I actually stand." />
+            <div className="grid3">{skills.map(s => { const I = s.icon; return <article className="card" key={s.title}><div className="ico"><I size={20} /></div><h3>{s.title}</h3><p>{s.text}</p><span className="tag">{s.tag}</span></article>; })}</div>
+          </div>
+        </section>
+
+        <section className="section" id="projects">
+          <div className="wrap">
+            <Head kicker="Projects" title="Things I've built and things I'm working on." sub="Every project is marked with its real stage, so you know what's live and what's still an idea in progress." />
+            <div className="bento">{projects.map(p => { const I = p.icon; return (
+              <article className={p.wide ? 'card wide' : 'card'} key={p.name}>
+                <div className="card-top"><div className="ico"><I size={20} /></div><span className={p.wide ? 'stage live' : 'stage'}>{p.stage}</span></div>
+                <h3>{p.name}</h3><p>{p.text}</p>
+                <div className="tags">{p.tags.map(t => <span key={t}>{t}</span>)}</div>
+                {p.href && <a className="link" href={p.href}>Try it below <ArrowUpRight size={14} /></a>}
+              </article>); })}</div>
+          </div>
+        </section>
+
+        <FlowPilot />
+
+        <section className="section alt" id="experience">
+          <div className="wrap narrow">
+            <Head kicker="Experience" title="Where I've worked." />
+            <div className="timeline">
+              <article><div className="dot" /><small>Huawei Technologies · about 6 years</small><h3>Telecommunications Engineer</h3><p>Network deployment and technical operations: antenna optimisation, RF engineering, supervising deployments, and working across mobile network technologies.</p><div className="tags"><span>3G/4G/5G</span><span>LTE / MIMO</span><span>RF</span><span>Antenna optimisation</span></div></article>
+              <article><div className="dot" /><small>International AI data platforms · project-based</small><h3>AI Data Annotator and LLM Evaluator</h3><p>Annotation, grading model responses, search relevance and multimodal dataset checks on OneForma, RWS, Appen CrowdGen and Lionbridge.</p><div className="tags"><span>LLM evaluation</span><span>Data quality</span><span>Search relevance</span><span>Multimodal</span></div></article>
+            </div>
+          </div>
+        </section>
+
+        <section className="section" id="training">
+          <div className="wrap narrow">
+            <Head kicker="Training" title="How I'm learning." />
+            <div className="list">{training.map(([I, t, d, s]) => <div className="li" key={t}><div className="ico"><I size={18} /></div><div><h3>{t}</h3><p>{d}</p></div><span className={s === 'In progress' ? 'stage' : 'stage live'}>{s}</span></div>)}</div>
+          </div>
+        </section>
+
+        <section className="section alt" id="ventures">
+          <div className="wrap">
+            <Head kicker="Ventures" title="Morgtech and ELYON." sub="Two names, one idea: make useful technology easier to get." />
+            <div className="grid2">
+              <article className="card"><div className="card-top"><div className="ico"><Cpu size={20} /></div><span className="stage live">Personal brand</span></div><h3>Morgtech</h3><p>My own tech and engineering brand. It's where I put software, AI experiments and digital projects.</p><a className="link" href="https://github.com/morgtech" target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={14} /></a></article>
+              <article className="card"><div className="card-top"><div className="ico"><Briefcase size={20} /></div><span className="stage live">Registered company</span></div><h3>ELYON Tech Solutions</h3><p>My registered Nigerian technology company. It's built around software, AI-enabled services and business automation for organisations and individuals. The product line is still growing.</p></article>
+            </div>
+          </div>
+        </section>
+
+        <section className="section" id="contact">
+          <div className="wrap">
+            <div className="final">
+              <h2>Got a project or a role in mind?</h2>
+              <p>I'm open to remote work and happy to talk about AI, automation or engineering. Send a message and I'll reply.</p>
+              <Contact />
+            </div>
+          </div>
+        </section>
+      </main>
+      <footer className="footer"><div className="wrap foot"><span>© {new Date().getFullYear()} Godwill Morgan Lekwa</span><span>Morgtech · ELYON Tech Solutions</span><a href="#home">Back to top</a></div></footer>
+    </>
+  );
 }
 
-createRoot(document.getElementById('root')).render(<App/>);
-
+createRoot(document.getElementById('root')).render(<App />);
